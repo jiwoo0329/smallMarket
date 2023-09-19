@@ -1,23 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 interface PropsType {
     data: foodDataType;
+    pickFoodList: foodDataType[];
+    setPickFoodList: Dispatch<SetStateAction<foodDataType[]>>;
 }
-export default function ProductBox({ data }: PropsType) {
+export default function ProductBox({
+    data,
+    pickFoodList,
+    setPickFoodList,
+}: PropsType) {
     const [isLike, setIsLike] = useState(false);
     const [isPick, setIsPick] = useState(false);
     const { id, productName, price, likeItTotal, description, productUrl } =
         data;
+
+    useEffect(() => {
+        if (isPick) {
+            setPickFoodList([...pickFoodList, data]);
+        } else {
+            // 선택 아닐 때
+            if (pickFoodList.length > 0) {
+                if (pickFoodList.some((item) => item.id === data.id)) {
+                    // 같은게 있을 떄
+                    pickFoodList.forEach((item, idx) => {
+                        if (item.id === data.id) {
+                            setPickFoodList(
+                                pickFoodList.filter(
+                                    (food) => food.id !== data.id
+                                )
+                            );
+                        }
+                    });
+                }
+            }
+        }
+    }, [isPick]);
 
     return (
         <div
             className="relative flex md:flex-col flex-wrap gap-4 rounded p-4 bg-white cursor-pointer drop-shadow-md hover:drop-shadow-xl"
             onClick={() => setIsPick(!isPick)}
         >
-            <label
-                htmlFor={`pickBtn${id}`}
-                className="w-6 h-6"
-            >
+            <label htmlFor={`pickBtn${id}`} className="w-6 h-6">
                 {isPick ? (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +78,7 @@ export default function ProductBox({ data }: PropsType) {
                     className="hidden"
                     checked={isPick}
                     onChange={(e) => {
-                        console.log(!e.target.checked)
+                        console.log(!e.target.checked);
                         setIsPick(!e.target.checked);
                     }}
                 ></input>
