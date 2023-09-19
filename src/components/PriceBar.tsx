@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Payment from '../utils/Payment';
 
 interface PropsType {
     pickFoodList: foodDataType[];
@@ -24,6 +25,9 @@ export default function PriceBar({ pickFoodList }: PropsType) {
             <button
                 type="button"
                 className="py-2 px-12 text-white bg-blue-400 hover:bg-blue-300 rounded transition duration-300"
+                onClick={() => {
+                    Payment(totalPrice);
+                }}
             >
                 Pay
             </button>
