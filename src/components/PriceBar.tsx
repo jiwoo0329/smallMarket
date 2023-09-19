@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Payment from '../utils/Payment';
-
+import { useNavigate } from "react-router-dom";
 interface PropsType {
     pickFoodList: foodDataType[];
 }
 
 export default function PriceBar({ pickFoodList }: PropsType) {
     const [totalPrice, setTotalPrice] = useState(0);
-
+    const navigate = useNavigate();
     useEffect(() => {
         let addPrice = 0;
         for (let i in pickFoodList) {
@@ -26,7 +26,7 @@ export default function PriceBar({ pickFoodList }: PropsType) {
                 type="button"
                 className="py-2 px-12 text-white bg-blue-400 hover:bg-blue-300 rounded transition duration-300"
                 onClick={() => {
-                    Payment(totalPrice);
+                    Payment(totalPrice, navigate);
                 }}
             >
                 Pay
