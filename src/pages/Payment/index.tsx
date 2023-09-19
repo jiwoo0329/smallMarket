@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
 
+declare const window: typeof globalThis & {
+  IMP: any;
+};
+
 export default function Payment() {
   useEffect(() => {
     const jquery = document.createElement("script");
@@ -31,7 +35,7 @@ export default function Payment() {
     IMP.request_pay(data, callback);
   };
 
-  const callback = (response) => {
+  const callback = (response: any) => {
     const {
       success,
       error_msg,
