@@ -3,7 +3,7 @@ declare const window: typeof globalThis & {
 };
 
 export default function Payment(totalPrice: number, navigate:any) {
-
+//
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
     const iamport = document.createElement('script');
