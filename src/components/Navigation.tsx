@@ -69,16 +69,24 @@ export default function Navigation() {
                             )}
                         </button>
                     </div>
-
                 </div>
-                    <ul
-                        className={classNames('md:hidden', {
-                            hidden: !menuToggle,
-                        }, 'flex flex-col space-y-2')}
+
+                <div
+                    className={classNames('md:hidden', { hidden: !menuToggle })}
+                >
+                    <a
+                        href="#"
+                        className="block py-4 px-4 text-sm hover:bg-gray-200"
                     >
-                        <li className="py-2 px-8 text-sm hover:bg-gray-200">SignIn</li>
-                        <li className="py-2 px-8 text-sm hover:bg-gray-200">Cart</li>
-                    </ul>
+                        SignIn
+                    </a>
+                    <a
+                        href="#"
+                        className="block py-4 px-4 text-sm hover:bg-gray-200"
+                    >
+                        Cart
+                    </a>
+                </div>
             </nav>
         </>
     );
