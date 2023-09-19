@@ -1,0 +1,66 @@
+[
+    {
+        "id": 1,
+        "productName": "참외",
+        "price": 3000,
+        "likeItTotal": 25,
+        "description": "직접 농사지은 꿀 참외! 우리 집은 꿀 대신 참외 먹어유~",
+        "productUrl": "assets/images/KoreanMelon.jpg"
+    },
+    {
+        "id": 2,
+        "productName": "계란",
+        "price": 8000,
+        "likeItTotal": 13,
+        "description": "오늘 훔쳐온 계란. 영양듬뿍 아이 어른 간식으로 제격입니다.",
+        "productUrl": "assets/images/eggs.jpg"
+    },
+    {
+        "id": 3,
+        "productName": "청포도",
+        "price": 5000,
+        "likeItTotal": 62,
+        "description": "입안 가득 푸르릇 청포도의 상큼함을 느껴보세요.",
+        "productUrl": "assets/images/grape.jpg"
+    },
+    {
+        "id": 4,
+        "productName": "상추",
+        "price": 3000,
+        "likeItTotal": 4,
+        "description": "이것만 먹어도 됩니다 신선 그자체.",
+        "productUrl": "assets/images/lettuce.jpg"
+    },
+    {
+        "id": 5,
+        "productName": "고기",
+        "price": 18000,
+        "likeItTotal": 78,
+        "description": "고기 사고 상추도 같이 사면 되겠다",
+        "productUrl": "assets/images/meat.jpg"
+    },
+    {
+        "id": 6,
+        "productName": "오렌지",
+        "price": 8000,
+        "likeItTotal": 25,
+        "description": "당도 100% 맛없으면 환불해 드립니다.",
+        "productUrl": "assets/images/orange.jpg"
+    },
+    {
+        "id": 7,
+        "productName": "복숭아",
+        "price": 10000,
+        "likeItTotal": 25,
+        "description": "말해뭐해 우리집 복숭아",
+        "productUrl": "assets/images/peach.jpg"
+    },
+    {
+        "id": 8,
+        "productName": "호박",
+        "price": 4000,
+        "likeItTotal": 25,
+        "description": "수박 아닙니다 호박입니다.",
+        "productUrl": "assets/images/pumpkin.jpg"
+    }
+]
