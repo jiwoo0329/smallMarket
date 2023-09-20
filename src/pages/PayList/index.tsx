@@ -3,14 +3,19 @@ import React, { useState, useEffect } from 'react';
 import GeneralWrap from '../../components/GeneralWrap';
 
 import { fireStore } from '../../lib/Firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { DocumentData } from '@google-cloud/firestore';
 
+interface extendPayHistoryType extends payHistoryType {
+    docId: string;
+}
+
 export default function PayList() {
-    const [payHistoryList, setPayHistoryList] = useState<Array<payHistoryType>>(
-        []
-    );
+    const [payHistoryList, setPayHistoryList] = useState<
+        Array<extendPayHistoryType>
+    >([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [pickItem, setPickItem] = useState('');
 
     const getPayHistoryOfFireBase = async () => {
         // 'payHistory' 컬렉션의 모든 문서들을 가져옴
@@ -18,11 +23,15 @@ export default function PayList() {
             collection(fireStore, 'payHistory')
         );
 
-        const payHistoryArr: payHistoryType[] = [];
+        const payHistoryArr: extendPayHistoryType[] = [];
         querySnapshot.forEach((doc: DocumentData) => {
             // 가져온 모든 문서들을 확인
             // console.log(doc.id, ' => ', doc.data());
-            return payHistoryArr.push(doc.data());
+
+            let addObj = {
+                docId: doc.id,
+            };
+            return payHistoryArr.push(Object.assign({}, doc.data(), addObj));
         });
         setPayHistoryList(payHistoryArr);
     };
@@ -39,6 +48,24 @@ export default function PayList() {
         }
     }, [payHistoryList]);
 
+    const clickDelete = async () => {
+        
+        var delConfirm = window.confirm('삭제하시겠습니까?');
+        if (delConfirm) {
+            // payHistory 콜렉션의 pickPayHistoryRef.current.value 문서 삭제
+            await deleteDoc(doc(fireStore, 'payHistory', pickItem))
+            .then((res) => {
+                getPayHistoryOfFireBase();
+                setPickItem('');
+                console.log('삭제 성공', res);
+            })
+            .catch((err) => {
+                console.log('삭제실패', err);
+            });
+        }
+        
+    };
+
     return (
         <section>
             <GeneralWrap>
@@ -47,10 +74,18 @@ export default function PayList() {
                         Payment History📄
                     </h2>
                     <div className="w-full overflow-auto mt-10">
+                        <button
+                            type="button"
+                            className="float-right py-2 px-4 border rounded text-white bg-red-600 hover:bg-red-700"
+                            onClick={clickDelete}
+                        >
+                            Delete
+                        </button>
                         <table className="whitespace-nowrap w-full min-w-[400px] break-words h-auto">
                             <thead className="border-b-2">
                                 <tr>
-                                    <th className="w-[10%] py-1 px-2">No.</th>
+                                    <th className="w-[5%] py-1 px-2"></th>
+                                    <th className="w-[5%] py-1 px-2">No.</th>
                                     <th className="w-[40%] py-1 px-2">Memo</th>
                                     <th className="w-[20%] py-1 px-2">
                                         Date/Time
@@ -60,15 +95,25 @@ export default function PayList() {
                             </thead>
                             <tbody>
                                 {payHistoryList?.map(
-                                    (item: payHistoryType, idx) => (
+                                    (item: extendPayHistoryType, idx) => (
                                         <tr
                                             key={item.uuid}
                                             className="hover:bg-gray-200"
                                         >
                                             <td className="text-center py-1 px-2">
+                                                <input
+                                                    type="radio"
+                                                    name="payHistoryItem"
+                                                    value={item.docId}
+                                                    onChange={() => {
+                                                        setPickItem(item.docId);
+                                                    }}
+                                                />
+                                            </td>
+                                            <td className="text-center py-1 px-2">
                                                 {idx + 1}
                                             </td>
-                                            <td className=" py-1 px-2">
+                                            <td className="py-1 px-2">
                                                 {item.payMemo}
                                             </td>
                                             <td className="text-center py-1 px-2">
@@ -81,6 +126,7 @@ export default function PayList() {
                                     )
                                 )}
                                 <tr className="border-t-2">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
