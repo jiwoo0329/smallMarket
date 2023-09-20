@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 
 // firebase 설정과 관련된 개인 정보
 const firebaseConfig = {
@@ -18,4 +19,7 @@ const firebase = initializeApp(firebaseConfig);
 // firebase의 firestore 인스턴스를 변수에 저장
 const fireStore = getFirestore(firebase);
 
-export { fireStore };
+// firebase의 firestore 스토리지를 변수에 저장
+const fireStorage = getStorage(firebase);
+
+export { fireStore, fireStorage };

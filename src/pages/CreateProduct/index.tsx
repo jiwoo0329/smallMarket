@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import GeneralWrap from '../../components/GeneralWrap';
 
-export default function CreateProduct() {
+import { fireStore, fireStorage } from '../../lib/Firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
+export default function CreateProduct() {
     const [imgUrl, setImgUrl] = useState<any>('');
 
     const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,23 +17,71 @@ export default function CreateProduct() {
         }
         reader.onload = () => {
             setImgUrl(reader.result);
-        }
-    }
+        };
+    };
 
-    const handleCreateData = (e: any) => {
+    const handleCreateData = async (e: any) => {
         e.preventDefault();
 
-        let uuid = crypto.randomUUID();
-        const data = {
-            id:             uuid,
-            productName:    e.target['productName'].value,
-            price:          Number(e.target['price'].value),
-            likeItTotal:    0,
-            description:    e.target['description'].value,
-            productUrl:     imgUrl
-        }
+        // firebase 이미지 저장
+        const file = e.target['productUrl'].files[0];
+        const storageRef = ref(fireStorage, 'productImg/' + file.name);
 
-        console.log("data", data)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+                // 업로드 중
+                const progress =
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (err) => {
+                // 에러 발생
+                console.log('err', err);
+            },
+            () => {
+                // 성공
+                getDownloadURL(uploadTask.snapshot.ref)
+                    .then((downloadURL) => {
+                        console.log('업로드된 경로는', downloadURL);
+
+                        // firebase 데이터 추가 (id는 자동 생성됨)
+                        let uuid = crypto.randomUUID();
+                        const data = {
+                            id: uuid,
+                            productName: e.target['productName'].value,
+                            price: Number(e.target['price'].value),
+                            likeItTotal: 0,
+                            description: e.target['description'].value,
+                            productUrl: downloadURL,
+                        };
+                        addDoc(collection(fireStore, 'product'), data)
+                            .then((res) => {
+                                console.log('res', res);
+                            })
+                            .catch((err) => {
+                                console.log('err', err);
+                            });
+                    })
+            }
+        );
+
+        // await uploadBytes(storageRef, file)
+        //     .then((snapshot) => {
+        //         console.log('snapshot', snapshot);
+        //     })
+        //     .catch((err) => {
+        //         console.log('err', err);
+        //     });
     };
 
     return (
@@ -93,7 +144,7 @@ export default function CreateProduct() {
                                 name="productUrl"
                                 placeholder="productUrl"
                                 className="w-full"
-                                onChange={(e)=>onChangeFile(e)}
+                                onChange={(e) => onChangeFile(e)}
                             ></input>
                         </div>
 
