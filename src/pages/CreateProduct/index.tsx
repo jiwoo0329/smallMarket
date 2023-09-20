@@ -151,6 +151,9 @@ export default function CreateProduct() {
                                 onChange={(e) => onChangeFile(e)}
                             ></input>
                         </div>
+                        <div className="w-full md:w-1/2  my-0 mx-auto">
+                            <img src={imgUrl} alt="선택한 파일 이미지"/>
+                        </div>
 
                         <button
                             type="submit"
