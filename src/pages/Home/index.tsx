@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// import foodList from '../../databases/foodList.json';
 import ProductBox from '../../components/ProductBox';
 import PriceBar from '../../components/PriceBar';
 import GeneralWrap from '../../components/GeneralWrap';
