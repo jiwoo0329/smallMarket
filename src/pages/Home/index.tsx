@@ -5,13 +5,15 @@ import ProductBox from '../../components/ProductBox';
 import PriceBar from '../../components/PriceBar';
 import GeneralWrap from '../../components/GeneralWrap';
 
+import { fireStore } from '../../lib/Firebase';
+
 export default function Home() {
     const [foodArr, setFoodArr] = useState<Array<foodDataType>>(foodList);
     const [pickFoodList, setPickFoodList] = useState<Array<foodDataType>>([]);
 
-    //   useEffect(()=>{
-    //     console.log("pickFoodList", pickFoodList)
-    // },[pickFoodList])
+      useEffect(()=>{
+        console.log("fireStore", fireStore)
+    },[pickFoodList])
 
     return (
         <section>
