@@ -1,9 +1,14 @@
+import { fireStore } from '../../lib/Firebase';
+import { collection, addDoc } from 'firebase/firestore';
+
+import { NowTime } from '../Time';
+import { TodayDate } from '../Date';
+
 declare const window: typeof globalThis & {
     IMP: any;
 };
 
-export default function Payment(totalPrice: number, navigate:any) {
-//
+export default function Payment(totalPrice: number, navigate: any) {
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
     const iamport = document.createElement('script');
@@ -19,25 +24,40 @@ export default function Payment(totalPrice: number, navigate:any) {
         IMP.init(userCode);
 
         const data = {
-            pg: "kakaopay",
-            pay_method: "card",
-            merchant_uid: "test_lmq2pfl4",
-            name: "테스트 결제",
+            pg: 'kakaopay',
+            pay_method: 'card',
+            merchant_uid: 'test_lmrrar8c',
+            name: '테스트 결제',
             amount: totalPrice,
             buyer_tel: '010-0000-0000',
         };
 
-        IMP.request_pay(data, callback);
+        IMP.request_pay(data, paymentCallback);
     };
 
-    const callback = (response: any) => {
-        const { success, error_msg } = response;
+    const paymentCallback = (response: any) => {
+        if (response.success) {
+            // firebase 데이터 추가 (id는 자동 생성됨)
+            let uuid = crypto.randomUUID();
+            let todayArr = TodayDate();
+            const data = {
+                uuid: uuid,
+                payMemo: response.name,
+                date: todayArr[0] + '.' + todayArr[1] + '.' + todayArr[2],
+                time: NowTime(),
+                totalPrice: response.paid_amount,
+            };
 
-        if (success) {
-            alert('결제 성공');
-            navigate('/pay/success');
+            addDoc(collection(fireStore, 'payHistory'), data)
+                .then((res) => {
+                    console.log('res', res);
+                    navigate('/pay/success');
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                });
         } else {
-            alert(`결제 실패: ${error_msg}`);
+            alert(`결제 실패: ${response.error_msg}`);
         }
     };
 
