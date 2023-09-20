@@ -9,10 +9,12 @@ function App() {
     return (
         <BrowserRouter>
             <Navigation />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/pay/success" element={<PaySuccess />} />
-            </Routes>
+            <main className="min-h-[calc(100vh-65.89px)]">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/pay/success" element={<PaySuccess />} />
+                </Routes>
+            </main>
         </BrowserRouter>
     );
 }
