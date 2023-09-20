@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import GeneralWrap from '../../components/GeneralWrap';
 
 import { fireStore, fireStorage } from '../../lib/Firebase';
@@ -7,6 +8,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 export default function CreateProduct() {
     const [imgUrl, setImgUrl] = useState<any>('');
+
+    const navigate = useNavigate();
 
     const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = (e.currentTarget.files as FileList)[0];
@@ -67,6 +70,7 @@ export default function CreateProduct() {
                         addDoc(collection(fireStore, 'product'), data)
                             .then((res) => {
                                 console.log('res', res);
+                                navigate('/');
                             })
                             .catch((err) => {
                                 console.log('err', err);
