@@ -19,15 +19,16 @@ export default function Payment(totalPrice: number, navigate: any) {
     document.head.removeChild(iamport);
 
     const onClickPayment = () => {
-        const userCode = 'imp14397622';
+        const userCode = process.env.REACT_APP_IMPORT_STORE_CODE;
         const { IMP } = window;
         IMP.init(userCode);
 
         const data = {
-            pg: 'kakaopay',
+            // pg: 'kakaopay.'+process.env.REACT_APP_IMPORT_KAKAOPAY_PG_ID,
+            pg: 'kicc.'+process.env.REACT_APP_IMPORT_KICC_PG_ID,
             pay_method: 'card',
-            merchant_uid: 'test_lmrrar8c',
-            name: '테스트 결제',
+            merchant_uid: 'merchant_'+NowTime(),
+            name: 'kakaopay 테스트 결제',
             amount: totalPrice,
             buyer_tel: '010-0000-0000',
         };
