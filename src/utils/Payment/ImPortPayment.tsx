@@ -8,7 +8,7 @@ declare const window: typeof globalThis & {
     IMP: any;
 };
 
-export default function Payment(formData: orderType, navigate: any) {
+export default function ImPortPayment(formData: orderType, navigate: any) {
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
     const iamport = document.createElement('script');

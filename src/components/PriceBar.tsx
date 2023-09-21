@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Payment from '../utils/Payment';
+import Payment from '../utils/Payment/ImPortPayment';
 import { useNavigate } from 'react-router-dom';
 interface PropsType {
     pickFoodList: foodDataType[];
@@ -43,8 +43,9 @@ export default function PriceBar({ pickFoodList }: PropsType) {
                 type="button"
                 className="py-2 px-12 text-white bg-blue-400 hover:bg-blue-300 rounded transition duration-300"
                 onClick={() => {
-                    navigate('/pay/order', {state: {cartList: pickFoodList}})
-                    
+                    navigate('/pay/order', {
+                        state: { cartList: pickFoodList },
+                    });
                 }}
             >
                 Pay Now
