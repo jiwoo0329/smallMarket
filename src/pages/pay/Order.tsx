@@ -4,16 +4,16 @@ import GeneralWrap from '../../components/GeneralWrap';
 import Payment from '../../utils/Payment';
 import Box from './_component/OrderBox';
 import Row from './_component/OrderFormRow';
+import DaumPostCodeBtn from '../../utils/Address/DaumPostCodeBtn';
 
 export default function Order() {
     const location = useLocation();
     const [cartList, setCartList] = useState(location.state.cartList);
+    const [searchAddress, setSearchAddress] = useState<getPostCodeAddressType>();
 
-    console.log('location', location.state.cartList);
-    
+    // console.log('location', location.state.cartList);
 
-
-    const onClickPayBtn = async (e:any) => {
+    const onClickPayBtn = async (e: any) => {
         e.preventDefault();
 
         const formData = {
@@ -25,16 +25,18 @@ export default function Order() {
             // productUrl: downloadURL,
         };
 
-
         // Payment(formData, navigate);
-    }
+    };
 
     return (
         <section className="bg-gray-300/50">
             <GeneralWrap>
                 <div className="mt-32 mb-20 md:px-10">
                     <h2 className="text-2xl text-center font-bold">Order✍️</h2>
-                    <form className="w-full mt-10 grid gap-10 border" onSubmit={(e)=>onClickPayBtn(e)}>
+                    <form
+                        className="w-full mt-10 grid gap-10 border"
+                        onSubmit={(e) => onClickPayBtn(e)}
+                    >
                         <Box boxTitle="1. Delivery Info 💡">
                             {/* 받는 사람 */}
                             <Row otherClassNames="items-center">
@@ -67,29 +69,34 @@ export default function Order() {
                                     <div className="flex md:w-1/2 gap-2">
                                         <input
                                             type="text"
-                                            id="address"
-                                            name="address"
+                                            id="postNum"
+                                            name="postNum"
+                                            value={searchAddress?.postNumber}
+                                            readOnly={true}
                                             placeholder="post number"
-                                            className="w-full py-2 px-4 border rounded-lg focus:shadow-sm focus:shadow-blue-200 focus:outline-none focus:border-blue-400 placeholder:italic placeholder:text-slate-400"
+                                            className="w-full py-2 px-4 border rounded-lg bg-gray-100/80 focus:outline-none placeholder:italic placeholder:text-slate-400"
                                         />
-                                        <button
-                                            type="button"
-                                            className="py-2 px-4 text-white bg-yellow-400 hover:bg-yellow-300 rounded transition duration-300"
-                                        >
-                                            Search
-                                        </button>
+                                        <DaumPostCodeBtn
+                                            setSearchAddress={setSearchAddress}
+                                        />
                                     </div>
                                     <input
                                         type="text"
                                         id="address"
                                         name="address"
+                                        value={
+                                            searchAddress?.address
+                                                ? `${searchAddress?.address} ${searchAddress?.extraAddress}`
+                                                : ''
+                                        }
+                                        readOnly={true}
                                         placeholder="address"
-                                        className="w-full py-2 px-4 border rounded-lg focus:shadow-sm focus:shadow-blue-200 focus:outline-none focus:border-blue-400 placeholder:italic placeholder:text-slate-400"
+                                        className="w-full py-2 px-4 border rounded-lg bg-gray-100/80 focus:outline-none placeholder:italic placeholder:text-slate-400"
                                     />
                                     <input
                                         type="text"
-                                        id="address"
-                                        name="address"
+                                        id="addressDetail"
+                                        name="addressDetail"
                                         placeholder="address detail"
                                         className="w-full py-2 px-4 border rounded-lg focus:shadow-sm focus:shadow-blue-200 focus:outline-none focus:border-blue-400 placeholder:italic placeholder:text-slate-400"
                                     />
@@ -168,7 +175,7 @@ export default function Order() {
                                             <div className="flex-1 pt-4 flex flex-col justify-between">
                                                 <div className="mb-5">
                                                     <h4 className="font-semibold">
-                                                    {item.productName}
+                                                        {item.productName}
                                                     </h4>
                                                     <p className="text-sm">
                                                         수량:{' '}
@@ -181,7 +188,7 @@ export default function Order() {
                                                         ></input>
                                                     </p>
                                                     <p className="text-right text-lg whitespace-nowrap">
-                                                    {item.price}
+                                                        {item.price}
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
