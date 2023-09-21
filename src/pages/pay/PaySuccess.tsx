@@ -9,7 +9,7 @@ export default function PaySuccess() {
                     <p className="text-5xl">Success🎉</p>
                     <div className="flex justify-around mt-10 text-gray-400">
                         <Link
-                            to="/pay/list"
+                            to="/pay/history"
                             className="underline decoration-solid hover:text-gray-300"
                         >
                             Pay History

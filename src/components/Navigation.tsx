@@ -37,7 +37,7 @@ export default function Navigation() {
                         </li>
                         <li>
                             <Link
-                                to="/pay/list"
+                                to="/pay/history"
                                 className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300"
                             >
                                 Pay History
@@ -93,7 +93,7 @@ export default function Navigation() {
                         Create Product
                     </Link>
                     <Link
-                        to="/pay/list"
+                        to="/pay/history"
                         className="block py-4 px-4 text-sm hover:bg-gray-200"
                     >
                         Pay History
