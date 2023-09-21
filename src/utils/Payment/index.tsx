@@ -8,7 +8,7 @@ declare const window: typeof globalThis & {
     IMP: any;
 };
 
-export default function Payment(totalPrice: number, navigate: any) {
+export default function Payment(formData: orderType, navigate: any) {
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
     const iamport = document.createElement('script');
@@ -23,20 +23,29 @@ export default function Payment(totalPrice: number, navigate: any) {
         const { IMP } = window;
         IMP.init(userCode);
 
+        let PG_env =
+            formData.paymentType === 'kicc'
+                ? process.env.REACT_APP_IMPORT_KICC_PG_ID
+                : process.env.REACT_APP_IMPORT_KAKAOPAY_PG_ID;
+
         const data = {
-            // pg: 'kakaopay.'+process.env.REACT_APP_IMPORT_KAKAOPAY_PG_ID,
-            pg: 'kicc.'+process.env.REACT_APP_IMPORT_KICC_PG_ID,
+            pg: formData.paymentType + '.' + PG_env,
             pay_method: 'card',
-            merchant_uid: 'merchant_'+NowTime(),
-            name: 'kakaopay 테스트 결제',
-            amount: totalPrice,
+            merchant_uid: 'merchant_' + NowTime(),
+            name: formData.paymentType + ' 테스트 결제',
+            amount: formData.totalPrice,
             buyer_tel: '010-0000-0000',
         };
+
+        console.log('아임포트데이터', data)
 
         IMP.request_pay(data, paymentCallback);
     };
 
     const paymentCallback = (response: any) => {
+
+
+        console.log("결과까지 옴", response)
         if (response.success) {
             // firebase 데이터 추가 (id는 자동 생성됨)
             let uuid = crypto.randomUUID();
