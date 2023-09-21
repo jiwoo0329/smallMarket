@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import GeneralWrap from '../../components/GeneralWrap';
 import Payment from '../../utils/Payment';
 import Box from './_component/OrderBox';
@@ -7,31 +7,46 @@ import Row from './_component/OrderFormRow';
 import DaumPostCodeBtn from '../../utils/Address/DaumPostCodeBtn';
 
 export default function Order() {
+    const navigate = useNavigate();
     const location = useLocation();
-    const [cartList, setCartList] = useState(location.state.cartList);
+    const cartList = location.state.cartList;
     const [searchAddress, setSearchAddress] = useState<getPostCodeAddressType>();
+    const [totalPrice, setTotalPrice] = useState(0);
 
-    // console.log('location', location.state.cartList);
+    useEffect(() => {
+        let addPrice = 0;
+        for (let i in cartList) {
+            addPrice += cartList[i].price;
+        }
+        setTotalPrice(addPrice);
+    }, [cartList]);
 
     const onClickPayBtn = async (e: any) => {
         e.preventDefault();
 
+        const target = e.target
+
         const formData = {
-            // id: uuid,
-            // productName: e.target['productName'].value,
-            // price: Number(e.target['price'].value),
-            // likeItTotal: 0,
-            // description: e.target['description'].value,
-            // productUrl: downloadURL,
+            recipient: target['recipient'].value,
+            address_postNum: target['postNum'].value,
+            address_basic: target['address'].value,
+            address_detail: target['addressDetail'].value,
+            mobile: target['mobileNum'].value,
+            email: target['email'].value,
+            payMemo: target['payMemo'].value,
+            totalPrice: totalPrice + 3000,
+            paymentType: target['paymentType'].value
         };
 
-        // Payment(formData, navigate);
+        console.log("formData", formData)
+
+        Payment(formData, navigate);
     };
 
     return (
         <section className="bg-gray-300/50">
             <GeneralWrap>
-                <div className="mt-32 mb-20 md:px-10">
+                <div className="pt-32 pb-20 md:px-10">
                     <h2 className="text-2xl text-center font-bold">Order✍️</h2>
                     <form
                         className="w-full mt-10 grid gap-10 border"
@@ -86,7 +101,7 @@ export default function Order() {
                                         name="address"
                                         value={
                                             searchAddress?.address
-                                                ? `${searchAddress?.address} ${searchAddress?.extraAddress}`
+                                                ? `${searchAddress?.address+searchAddress?.extraAddress}`
                                                 : ''
                                         }
                                         readOnly={true}
@@ -177,7 +192,7 @@ export default function Order() {
                                                     <h4 className="font-semibold">
                                                         {item.productName}
                                                     </h4>
-                                                    <p className="text-sm">
+                                                    {/* <p className="text-sm">
                                                         수량:{' '}
                                                         <input
                                                             type="number"
@@ -186,7 +201,7 @@ export default function Order() {
                                                             max={100}
                                                             defaultValue={1}
                                                         ></input>
-                                                    </p>
+                                                    </p> */}
                                                     <p className="text-right text-lg whitespace-nowrap">
                                                         {item.price}
                                                         <svg
@@ -217,7 +232,7 @@ export default function Order() {
                                     <tr>
                                         <td className="py-2">Products Price</td>
                                         <td className="py-2 text-right">
-                                            1,344,230
+                                            {totalPrice}
                                         </td>
                                     </tr>
                                     <tr className="border-b">
@@ -231,25 +246,22 @@ export default function Order() {
                                             Total
                                         </td>
                                         <td className="py-2 text-right text-2xl text-blue-600">
-                                            1,644,240
+                                            {totalPrice + 3000}
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                             <Row otherClassNames="items-center">
                                 <h4 className="font-semibold">Type</h4>
-                                <select className="flex-1 border rounded-lg py-1 px-2">
-                                    <option value="KakaoPay">KakaoPay</option>
-                                    <option value="Card" selected={true}>
-                                        Card
-                                    </option>
+                                <select name="paymentType" defaultValue="kicc" className="flex-1 border rounded-lg py-1 px-2">
+                                    <option value="kakaopay">KakaoPay</option>
+                                    <option value="kicc">Card</option>
                                 </select>
                             </Row>
                         </Box>
                         <button
                             type="submit"
                             className="py-2 px-12 sm:w-1/3 my-0 mx-auto text-white bg-blue-400 hover:bg-blue-300 rounded transition duration-300"
-                            // onClick={()=>onClickPayBtn()}
                         >
                             Pay Now
                         </button>
