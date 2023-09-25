@@ -31,8 +31,8 @@ export default function Navigation() {
                     </ul>
                     <ul className="hidden md:flex items-center space-x-2">
                         <li>
-                            <Link to="/product/create" className="py-5 px-3">
-                                Create Product
+                            <Link to="/product/list" className="py-5 px-3">
+                                Products
                             </Link>
                         </li>
                         <li>
@@ -87,10 +87,10 @@ export default function Navigation() {
                     className={classNames('md:hidden', { hidden: !menuToggle })}
                 >
                     <Link
-                        to="/product/create"
+                        to="/product/list"
                         className="block py-4 px-4 text-sm hover:bg-gray-200"
                     >
-                        Create Product
+                        Products
                     </Link>
                     <Link
                         to="/pay/history"
