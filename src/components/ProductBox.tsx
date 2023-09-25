@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import AddCommaToNum from '../utils/Payment';
 
 interface PropsType {
     data: foodDataType;
@@ -97,7 +98,7 @@ export default function ProductBox({
                 </div>
                 <div className="flex justify-between">
                     <span className="text-lg whitespace-nowrap">
-                        {price}
+                        {AddCommaToNum(price, 'show')}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

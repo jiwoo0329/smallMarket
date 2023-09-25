@@ -5,6 +5,7 @@ import Payment from '../../utils/Payment/ImPortPayment';
 import Box from './_component/OrderBox';
 import Row from './_component/OrderFormRow';
 import DaumPostCodeBtn from '../../utils/Address/DaumPostCodeBtn';
+import AddCommaToNum from '../../utils/Payment';
 
 export default function Order() {
     const navigate = useNavigate();
@@ -207,7 +208,7 @@ export default function Order() {
                                                         ></input>
                                                     </p> */}
                                                     <p className="text-right text-lg whitespace-nowrap">
-                                                        {item.price}
+                                                        {AddCommaToNum(item.price, 'show')}
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
@@ -236,13 +237,13 @@ export default function Order() {
                                     <tr>
                                         <td className="py-2">Products Price</td>
                                         <td className="py-2 text-right">
-                                            {totalPrice}
+                                            {AddCommaToNum(totalPrice, 'show')}
                                         </td>
                                     </tr>
                                     <tr className="border-b">
                                         <td className="py-2">Delivery fee</td>
                                         <td className="py-2 text-right">
-                                            3000
+                                            3,000
                                         </td>
                                     </tr>
                                     <tr>
@@ -250,7 +251,7 @@ export default function Order() {
                                             Total
                                         </td>
                                         <td className="py-2 text-right text-2xl text-blue-600">
-                                            {totalPrice + 3000}
+                                            {AddCommaToNum(totalPrice + 3000, 'show')}
                                         </td>
                                     </tr>
                                 </tbody>

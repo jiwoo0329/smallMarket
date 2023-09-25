@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Payment from '../utils/Payment/ImPortPayment';
 import { useNavigate } from 'react-router-dom';
+import AddCommaToNum from '../utils/Payment';
+
 interface PropsType {
     pickFoodList: foodDataType[];
 }
@@ -21,7 +23,7 @@ export default function PriceBar({ pickFoodList }: PropsType) {
             <h2 className="text-xl">
                 Total:
                 <span>
-                    {totalPrice}
+                    {AddCommaToNum(totalPrice, 'show')}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

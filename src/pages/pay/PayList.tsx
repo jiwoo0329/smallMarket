@@ -5,6 +5,7 @@ import GeneralWrap from '../../components/GeneralWrap';
 import { fireStore } from '../../lib/Firebase';
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { DocumentData } from '@google-cloud/firestore';
+import AddCommaToNum from '../../utils/Payment';
 
 interface extendPayHistoryType extends payHistoryType {
     docId: string;
@@ -120,7 +121,7 @@ export default function PayList() {
                                                 {item.date} / {item.time}
                                             </td>
                                             <td className="text-right py-1 px-2">
-                                                {item.totalPrice}
+                                                {AddCommaToNum(item.totalPrice, 'show')}
                                             </td>
                                         </tr>
                                     )
@@ -131,7 +132,7 @@ export default function PayList() {
                                     <td></td>
                                     <td></td>
                                     <td className="py-1 px-2 font-semibold text-right text-red-500">
-                                        {totalPrice}
+                                        {AddCommaToNum(totalPrice, 'show')}
                                     </td>
                                 </tr>
                             </tbody>
