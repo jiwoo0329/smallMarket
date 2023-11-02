@@ -8,7 +8,7 @@ import { fireStore } from '../../lib/Firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { DocumentData } from '@google-cloud/firestore';
 
-export default function Home() {
+export default function ProductList() {
     const [foodList, setFoodList] = useState<Array<foodDataType>>([]);
     const [pickFoodList, setPickFoodList] = useState<Array<foodDataType>>([]);
 

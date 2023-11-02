@@ -43,7 +43,8 @@ export default function PriceBar({ pickFoodList }: PropsType) {
                 type="button"
                 className="py-2 px-12 text-white bg-blue-400 hover:bg-blue-300 rounded transition duration-300"
                 onClick={() => {
-                    Payment(totalPrice, navigate);
+                    navigate('/pay/order', {state: {cartList: pickFoodList}})
+                    
                 }}
             >
                 Pay Now
