@@ -5,6 +5,7 @@ import GeneralWrap from '../../components/GeneralWrap';
 import { fireStore, fireStorage } from '../../lib/Firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import AddCommaToNum from '../../utils/Payment';
 
 export default function CreateProduct() {
     const [imgUrl, setImgUrl] = useState<any>('');
@@ -53,29 +54,28 @@ export default function CreateProduct() {
             },
             () => {
                 // 성공
-                getDownloadURL(uploadTask.snapshot.ref)
-                    .then((downloadURL) => {
-                        console.log('업로드된 경로는', downloadURL);
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('업로드된 경로는', downloadURL);
 
-                        // firebase 데이터 추가 (id는 자동 생성됨)
-                        let uuid = crypto.randomUUID();
-                        const data = {
-                            id: uuid,
-                            productName: e.target['productName'].value,
-                            price: Number(e.target['price'].value),
-                            likeItTotal: 0,
-                            description: e.target['description'].value,
-                            productUrl: downloadURL,
-                        };
-                        addDoc(collection(fireStore, 'product'), data)
-                            .then((res) => {
-                                console.log('res', res);
-                                navigate('/');
-                            })
-                            .catch((err) => {
-                                console.log('err', err);
-                            });
-                    })
+                    // firebase 데이터 추가 (id는 자동 생성됨)
+                    let uuid = crypto.randomUUID();
+                    const data = {
+                        id: uuid,
+                        productName: e.target['productName'].value,
+                        price: Number(e.target['price'].value),
+                        likeItTotal: 0,
+                        description: e.target['description'].value,
+                        productUrl: downloadURL,
+                    };
+                    addDoc(collection(fireStore, 'product'), data)
+                        .then((res) => {
+                            console.log('res', res);
+                            navigate('/');
+                        })
+                        .catch((err) => {
+                            console.log('err', err);
+                        });
+                });
             }
         );
 
@@ -130,11 +130,15 @@ export default function CreateProduct() {
                                 price
                             </label>
                             <input
-                                type="number"
+                                type="text"
                                 id="price"
                                 name="price"
                                 placeholder="price"
                                 className="w-full py-2 px-4 border rounded-lg focus:shadow-sm focus:shadow-blue-200 focus:outline-none focus:border-blue-400 placeholder:italic placeholder:text-slate-400"
+                                onChange={(e) => {
+                                    // let val = e.target.value.replaceAll(',', "");
+                                    e.target.value = AddCommaToNum(e.target.value, 'onChange');
+                                }}
                             ></input>
                         </div>
                         <div className="w-full md:w-1/2  my-0 mx-auto">
@@ -152,7 +156,7 @@ export default function CreateProduct() {
                             ></input>
                         </div>
                         <div className="w-full md:w-1/2  my-0 mx-auto">
-                            <img src={imgUrl} alt="선택한 파일 이미지"/>
+                            <img src={imgUrl} alt="선택한 파일 이미지" />
                         </div>
 
                         <button

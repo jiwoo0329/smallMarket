@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import GeneralWrap from '../../components/GeneralWrap';
-import Payment from '../../utils/Payment';
+import Payment from '../../utils/Payment/ImPortPayment';
 import Box from './_component/OrderBox';
 import Row from './_component/OrderFormRow';
 import DaumPostCodeBtn from '../../utils/Address/DaumPostCodeBtn';
+import AddCommaToNum from '../../utils/Payment';
 
 export default function Order() {
     const navigate = useNavigate();
     const location = useLocation();
     const cartList = location.state.cartList;
-    const [searchAddress, setSearchAddress] = useState<getPostCodeAddressType>();
+    const [searchAddress, setSearchAddress] =
+        useState<getPostCodeAddressType>();
     const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
@@ -24,7 +26,7 @@ export default function Order() {
     const onClickPayBtn = async (e: any) => {
         e.preventDefault();
 
-        const target = e.target
+        const target = e.target;
 
         const formData = {
             recipient: target['recipient'].value,
@@ -35,10 +37,10 @@ export default function Order() {
             email: target['email'].value,
             payMemo: target['payMemo'].value,
             totalPrice: totalPrice + 3000,
-            paymentType: target['paymentType'].value
+            paymentType: target['paymentType'].value,
         };
 
-        console.log("formData", formData)
+        console.log('formData', formData);
 
         Payment(formData, navigate);
     };
@@ -101,7 +103,10 @@ export default function Order() {
                                         name="address"
                                         value={
                                             searchAddress?.address
-                                                ? `${searchAddress?.address+searchAddress?.extraAddress}`
+                                                ? `${
+                                                      searchAddress?.address +
+                                                      searchAddress?.extraAddress
+                                                  }`
                                                 : ''
                                         }
                                         readOnly={true}
@@ -203,7 +208,7 @@ export default function Order() {
                                                         ></input>
                                                     </p> */}
                                                     <p className="text-right text-lg whitespace-nowrap">
-                                                        {item.price}
+                                                        {AddCommaToNum(item.price, 'show')}
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
@@ -232,13 +237,13 @@ export default function Order() {
                                     <tr>
                                         <td className="py-2">Products Price</td>
                                         <td className="py-2 text-right">
-                                            {totalPrice}
+                                            {AddCommaToNum(totalPrice, 'show')}
                                         </td>
                                     </tr>
                                     <tr className="border-b">
                                         <td className="py-2">Delivery fee</td>
                                         <td className="py-2 text-right">
-                                            3000
+                                            3,000
                                         </td>
                                     </tr>
                                     <tr>
@@ -246,14 +251,18 @@ export default function Order() {
                                             Total
                                         </td>
                                         <td className="py-2 text-right text-2xl text-blue-600">
-                                            {totalPrice + 3000}
+                                            {AddCommaToNum(totalPrice + 3000, 'show')}
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                             <Row otherClassNames="items-center">
                                 <h4 className="font-semibold">Type</h4>
-                                <select name="paymentType" defaultValue="kicc" className="flex-1 border rounded-lg py-1 px-2">
+                                <select
+                                    name="paymentType"
+                                    defaultValue="kicc"
+                                    className="flex-1 border rounded-lg py-1 px-2"
+                                >
                                     <option value="kakaopay">KakaoPay</option>
                                     <option value="kicc">Card</option>
                                 </select>
