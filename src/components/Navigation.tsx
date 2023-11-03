@@ -6,7 +6,7 @@ export default function Navigation() {
     const [menuToggle, setMenuToggle] = useState(false);
     return (
         <>
-            <nav className="bg-gray-100">
+            <nav className="bg-gray-100 absolute z-50 w-full top-0 left-0">
                 <div className="flex justify-between px-4">
                     <ul className="flex space-x-4 py-5 ">
                         <li>
@@ -24,15 +24,15 @@ export default function Navigation() {
                                     d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
                                 />
                             </svg>
-                            <Link to="/" className="font-bold">
+                            <Link to="/" className="font-HappinessSansTitle">
                                 Small Market
                             </Link>
                         </li>
                     </ul>
                     <ul className="hidden md:flex items-center space-x-2">
                         <li>
-                            <Link to="/product/create" className="py-5 px-3">
-                                Create Product
+                            <Link to="/product/list" className="py-5 px-3">
+                                Products
                             </Link>
                         </li>
                         <li>
@@ -87,10 +87,10 @@ export default function Navigation() {
                     className={classNames('md:hidden', { hidden: !menuToggle })}
                 >
                     <Link
-                        to="/product/create"
+                        to="/product/list"
                         className="block py-4 px-4 text-sm hover:bg-gray-200"
                     >
-                        Create Product
+                        Products
                     </Link>
                     <Link
                         to="/pay/history"
