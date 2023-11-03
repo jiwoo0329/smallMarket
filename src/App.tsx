@@ -23,7 +23,6 @@ function App() {
                     <Route path="/pay/order" element={<Order />} />
                     <Route path="/pay/success" element={<PaySuccess />} />
                     <Route path="/pay/history" element={<PayList />} />
-
                 </Routes>
             </main>
         </BrowserRouter>
